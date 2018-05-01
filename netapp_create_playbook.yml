@@ -1,0 +1,72 @@
+---
+- name: Playbook to Create SVM and Manage FlexVol 
+  hosts: localhost
+#  connection: local
+  vars: 
+   netapp_hostname: 172.16.130.41
+   netapp_username: admin
+   netapp_password: netapp123
+
+  tasks:   
+  - name: Create SVM
+    na_cdot_svm:
+      state: present
+      name: ansible_vserver
+      root_volume: ansible_vserver_root
+      root_volume_aggregate: aggr_n1_data
+      root_volume_security_style: unix
+      hostname: "{{ netapp_hostname }}"
+      username: "{{ netapp_username }}"
+      password: "{{ netapp_password }}"
+  
+  - name: Create FlexVol
+    na_cdot_volume: 
+      state: present
+      name: ansible_test01
+      infinite: False
+      aggregate_name: aggr_n1_data
+      size: 20
+      size_unit: mb
+      vserver: ansible_vserver
+      hostname: "{{ netapp_hostname }}"
+      username: "{{ netapp_username }}"
+      password: "{{ netapp_password }}"
+
+  - name: Create FlexVol
+    na_cdot_volume: 
+      state: present
+      name: ansible_test02
+      infinite: False
+      aggregate_name: aggr_n1_data
+      size: 20
+      size_unit: mb
+      vserver: ansible_vserver
+      hostname: "{{ netapp_hostname }}"
+      username: "{{ netapp_username }}"
+      password: "{{ netapp_password }}"
+
+  - name: Offline FlexVol
+    na_cdot_volume: 
+      state: present
+      name: ansible_test01
+      infinite: False
+      aggregate_name: aggr_n1_data
+      is_online: false
+      size: 20
+      size_unit: mb 
+      vserver: ansible_vserver
+      hostname: "{{ netapp_hostname }}"
+      username: "{{ netapp_username }}"
+      password: "{{ netapp_password }}"
+
+  - name: Delete FlexVol
+    na_cdot_volume: 
+      state: absent
+      name: ansible_test01
+      infinite: False
+      aggregate_name: aggr_n1_data
+      online: false 
+      vserver: ansible_vserver
+      hostname: "{{ netapp_hostname }}"
+      username: "{{ netapp_username }}"
+      password: "{{ netapp_password }}"
