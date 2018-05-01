@@ -5,7 +5,7 @@ For this project I have chosen to use some of the pre-packaged Ansible Storage M
 
 Requirements to successfully execute the playbook 
 
+  - Python 2.6/2.7 or Python 3.5 and higher 
   - Ansible 2.5 
   - netapp-lib 
   - NetApp Ontap 8.3.2 Simulator 
-
